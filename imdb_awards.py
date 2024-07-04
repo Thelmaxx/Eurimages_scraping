@@ -6,8 +6,20 @@ from selenium.webdriver.common.by import By
 
 tqdm.pandas()
 
-IMDB_CANNES="https://www.imdb.com/event/ev0000147/" # add at the end the year and /1 (ex 2023 : "https://www.imdb.com/event/ev0000147/2023/1")
-IMDB_BERLINALE="https://www.imdb.com/event/ev0000091/" # add at the end the year and /1 (ex 2020 : "https://www.imdb.com/event/ev0000091/2020/1")
+URL_IMDB_CANNES="https://www.imdb.com/event/ev0000147/2023/1" # add year/1 at the end (ex 2023 : "https://www.imdb.com/event/ev0000147/2023/1")
+URL_IMDB_BERLINALE="https://www.imdb.com/event/ev0000091/2023/1" # add year/1 at the end (ex 2020 : "https://www.imdb.com/event/ev0000091/2020/1")
+URL_IMDB_GOLDEN_GLOBES="https://www.imdb.com/event/ev0000292/2023/1" # add year/1 at the end
+URL_IMDB_ROTTERDAM="https://www.imdb.com/event/ev0000569/2023/1" # add year/1 at the end
+URL_IMDB_OSCARS="https://www.imdb.com/event/ev0000003/2023/1" #Academy Awards, add year/1 at the end
+URL_IMDB_CPH_DOX="https://www.imdb.com/event/ev0000982/2023/1" # add year/1 at the end
+URL_IMDB_ANNECY="https://www.imdb.com/event/ev0000031/2023/1" # add year/1 at the end
+URL_IMDB_KARLOVY_VARY="https://www.imdb.com/event/ev0000384/2023/1" # add year/1 at the end
+URL_IMDB_LOCARNO="https://www.imdb.com/event/ev0000400/2023/1" # add year/1 at the end
+URL_IMDB_SARAJEVO="https://www.imdb.com/event/ev0000871/2023/1" # add year/1 at the end
+URL_IMDB_VENICE="https://www.imdb.com/event/ev0000681/2023/1" # add year/1 at the end
+URL_IMDB_SAN_SEBASTIAN="https://www.imdb.com/event/ev0000588/2023/1" # add year/1 at the end
+URL_IMDB_POFF="https://www.imdb.com/event/ev0001559/2023/1" # add year/1 at the end
+URL_IMDB_EUROPEAN_FILM_AWARDS="https://www.imdb.com/event/ev0000230/2023/1" # add year/1 at the end
 
 def is_winner(nominee):
     try:
