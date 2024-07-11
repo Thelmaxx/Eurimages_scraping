@@ -49,7 +49,7 @@ def movie_request(movie,token):
 #in order to search for a movie you can either:
 # - provide the information in the different arguments 
 # - give a dict for research_params containing the movie search parameters
-def match_lumieres_id(token,title=False,
+def find_movie(token,title=False,
                       director=False,
                       production_country=False,
                       prod_start_year=False,

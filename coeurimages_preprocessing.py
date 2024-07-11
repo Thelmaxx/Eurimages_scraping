@@ -14,6 +14,9 @@ def preprocessing(files_data,coproducers_data,out_file):
     # clean duplicates
     files_df=files_df.drop_duplicates()
 
+    # remove projets for distribution (their reference ends with -D, like 11-165-D)
+    files_df=files_df[~files_df['Reference'].str.contains('D')]
+
     # fill na in director's first and last name and create the column Director
     files_df["Firstname"]=files_df["Firstname"].fillna('')
     files_df["Lastname"]=files_df["Lastname"].fillna('')
@@ -85,6 +88,8 @@ def preprocessing(files_data,coproducers_data,out_file):
 
     if "level_0" in join_df.keys():
         del join_df["level_0"]
+    if "key" in join_df.keys():
+        del join_df["key"]
 
 
     join_df.to_excel(out_file,index=None)
