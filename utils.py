@@ -128,3 +128,15 @@ def remove_empty(s):
             return s
     else:
         return s
+    
+# used to apply on the columns that should contain lists, when I save df with columns containing lists and read them later, the lists transform into str
+def from_str_to_list(s,number=False):
+    if type(s)==str:
+        strip=s[1:-1]
+        spl=[k.strip("'").strip() for k in strip.split(",")]
+        
+        if number:
+            spl=[float(k) for k in spl]
+        return spl
+    else:
+        return s

@@ -42,6 +42,18 @@ def matching_project(OriginalTitle,FrenchTitle,EnglishTitle,Director,country,ref
 def matching_file(in_file,out_file,start_year=0,end_year=999999,show_progress=False):
 
     data=pd.read_excel(in_file)
+
+    # restore the lists
+    data["Director"]=data["Director"].apply(utils.from_str_to_list)
+    data["AnnouncedAmount"]=data["AnnouncedAmount"].apply(utils.from_str_to_list)
+    data["CoproducerId"]=data["CoproducerId"].apply(utils.from_str_to_list)
+    data["countryname1_english"]=data["countryname1_english"].apply(utils.from_str_to_list)
+    data["percentage_participation"]=data["percentage_participation"].apply(utils.from_str_to_list)
+    data["contributor_rank"]=data["contributor_rank"].apply(utils.from_str_to_list)
+    data["majmin"]=data["majmin"].apply(utils.from_str_to_list)
+
+
+
     # here I split the data by year so that if there is an error, only one year is removed
     data_list=[data[data['refyear']==y].reset_index(drop=True) for y in range(max(start_year,data["refyear"].min()),min(end_year, data["refyear"].max())+1)]
 
@@ -52,7 +64,7 @@ def matching_file(in_file,out_file,start_year=0,end_year=999999,show_progress=Fa
     else:
         iterable=data_list()
 
-    for df in tqdm(data_list):
+    for df in tqdm(iterable):
         df['matching']=df.apply(lambda x: matching_project(x.OriginalTitle,x.FrenchTitle,x.EnglishTitle,x.Director,x.country1,x.refyear,x.ID,token), axis=1)
 
     lum.logout(token)
@@ -128,3 +140,15 @@ def fill_back(data_file,matching_file,out_file):
     not_found.to_excel(not_found_file,index=None)
 
     return filesliced
+
+def remove_false_positive(matching):
+    # remove relevance under threshold
+    threshold=0.5
+    for req in matching:
+        valid_results=[]
+        for res in req['resultat']:
+            if res["relevance"]>=threshold:
+                valid_results.append(res)
+        req["resultat"]=valid_results
+
+    # remove bad director

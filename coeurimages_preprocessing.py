@@ -1,4 +1,5 @@
 import pandas as pd
+from unidecode import unidecode
 import utils
 
 files_data="data/extract_scraping.xlsx"
@@ -22,6 +23,11 @@ def preprocessing(files_data,coproducers_data,out_file):
     files_df["Lastname"]=files_df["Lastname"].fillna('')
     files_df["Director"]=files_df["Firstname"]+' '+files_df["Lastname"]
     files_df=files_df.drop(columns=['Firstname','Lastname'])
+
+    # Simplify director's names (remove accents, spaces etc)
+    files_df["Director"]=files_df['Director'].apply(lambda s : unidecode(s.strip()))
+
+
 
     # assign correct types to columns
     # files_df.Reference=files_df.Reference.astype('string')
