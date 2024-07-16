@@ -1,6 +1,9 @@
 import pandas as pd
 from tqdm import tqdm
+from unidecode import unidecode
+from difflib import SequenceMatcher
 import json
+import re
 
 import utils
 import lumieres_api as lum
@@ -39,6 +42,55 @@ def matching_project(OriginalTitle,FrenchTitle,EnglishTitle,Director,country,ref
     return temp_res
 
 
+def remove_false_positive(matching):
+    # remove relevance under threshold
+    threshold_relevance=0.5
+
+    for movie in matching:
+        for req in movie:
+            valid_results=[]
+            bad_match=[]
+            for res in req['resultat']:
+                if res["relevance"]>=threshold_relevance:
+                    valid_results.append(res)
+                else:
+                    bad_match.append(res)
+            req["resultat"]=valid_results
+            req["bad_match"]=bad_match
+
+    # remove bad director
+    threshold_director=0.7
+    
+    
+    for movie in matching:
+        for req in movie:
+            valid_results=[]
+            bad_match_dir=[]
+            for res in req['resultat']:
+                if len(res["directors"])>1 and ('director' in req["recherche"].keys()):
+                    dirs_match=[unidecode(name.strip()) for name in res["directors"].split(", ")]
+                    dir_rech=unidecode(req["recherche"]["director"].strip("'"))
+
+                    if dir_rech in dirs_match:
+                        valid_results.append(res)
+                    else:
+                        flag_add=True
+                        for d in dirs_match:
+                            if SequenceMatcher(None,d,dir_rech).ratio()>threshold_director and flag_add:
+                                valid_results.append(res)
+                                flag_add=False
+                        if flag_add:
+                            bad_match.append(res)
+                else:
+                    if not 'director' in req["recherche"].keys():
+                        valid_results.append(res)
+                    else:
+                        bad_match_dir.append(res)
+            req["resultat"]=valid_results
+            req["bad_match"]+=bad_match_dir
+
+    return matching
+
 def matching_file(in_file,out_file,start_year=0,end_year=999999,show_progress=False):
 
     data=pd.read_excel(in_file)
@@ -69,13 +121,18 @@ def matching_file(in_file,out_file,start_year=0,end_year=999999,show_progress=Fa
 
     lum.logout(token)
 
+
     concatenated_df = pd.concat(data_list, ignore_index=True).reset_index(drop=True)
 
+    #remove bad matches and incorrect director 
+    #to do : remove false positive from the df directly instead of the json so that there is no situation with no director in the research
+    matching_list=remove_false_positive(concatenated_df.matching.to_list())
+
     out_file = open(out_file, "w") 
-    json.dump(concatenated_df.matching.to_list(), out_file, indent = 6) 
+    json.dump(matching_list, out_file, indent = 6) 
     out_file.close()
 
-    return concatenated_df
+    return matching_list
 
 
 def fill_back(data_file,matching_file,out_file):
@@ -141,14 +198,7 @@ def fill_back(data_file,matching_file,out_file):
 
     return filesliced
 
-def remove_false_positive(matching):
-    # remove relevance under threshold
-    threshold=0.5
-    for req in matching:
-        valid_results=[]
-        for res in req['resultat']:
-            if res["relevance"]>=threshold:
-                valid_results.append(res)
-        req["resultat"]=valid_results
 
-    # remove bad director
+
+
+

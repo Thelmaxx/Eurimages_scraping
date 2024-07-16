@@ -1,5 +1,5 @@
 import requests as req
-
+import json
 # Diverse functions used to interact with the lumieres pro API
 # You can find the API documentation here : https://lumierepro.obs.coe.int/schema/redoc
 
@@ -16,11 +16,11 @@ movie_exemple={
 #try to return a valid api identification token, if it can't it returns the reason
 def get_token():
     gettokenurl='https://lumierepro.obs.coe.int/api/token'
-
-    ident={
-        "username": "patrizia.simone@coe.int",
-        "password": 'eurimages2024'
-    }
+    
+    # the id for the lumiere pro api should be stored in a json format in a file name var.env that will be added to .gitignore
+    f=open("var.env",'r')
+    ident=json.load(f) 
+    f.close() 
 
 
     rep=req.post(gettokenurl,json=ident)
