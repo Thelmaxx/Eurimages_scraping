@@ -17,7 +17,7 @@ movie_exemple={
 def get_token():
     gettokenurl='https://lumierepro.obs.coe.int/api/token'
     
-    # the id for the lumiere pro api should be stored in a json format in a file name var.env that will be added to .gitignore
+    # the id for the lumiere pro api should be stored in a json format in a file named var.env that will be added to .gitignore
     f=open("var.env",'r')
     ident=json.load(f) 
     f.close() 
