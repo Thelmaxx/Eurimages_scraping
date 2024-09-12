@@ -2,18 +2,44 @@ import requests as req
 from bs4 import BeautifulSoup
 import json
 
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import selenium.common.exceptions as sele_excep
+from selenium.webdriver.edge.options import Options
+
 def from_imdb_to_letterboxd(imdb_id):
-    rech=req.get(f"https://letterboxd.com/search/{imdb_id}/")
-    soup = BeautifulSoup(rech.text, 'html.parser')
+
+    
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Edge(options=options)
+    driver.get(f"https://letterboxd.com/search/{imdb_id}/")
+
     good_link=''
     found_flag=True
-    for link in soup.find_all('a'):
-        l=link.get('href')
+    c=0
+    link_list=driver.find_elements(By.TAG_NAME, "a")
+    while found_flag and c<len(link_list) :
+        l=link_list[c].get_attribute('href')
         link_spl=l.split("/")
-        if len(link_spl)==4 and found_flag:
-            if link_spl[1]=='film':
-                good_link='https://letterboxd.com'+l
+        if len(link_spl)==6 and found_flag:
+            if link_spl[3]=='film':
+                good_link=l
                 found_flag=False
+        c+=1
+
+    #old method that worked before they added javascript to the website
+    # rech=req.get(f"https://letterboxd.com/search/{imdb_id}/")
+    # soup = BeautifulSoup(rech.text, 'html.parser')
+    # good_link=''
+    # found_flag=True
+    # for link in soup.find_all('a'):
+    #     l=link.get('href')
+    #     link_spl=l.split("/")
+    #     if len(link_spl)==4 and found_flag:
+    #         if link_spl[1]=='film':
+    #             good_link='https://letterboxd.com'+l
+    #             found_flag=False
 
     return good_link
 
