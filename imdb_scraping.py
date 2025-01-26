@@ -209,3 +209,96 @@ def get_titles_ratings(path_to_out_file):
 
     return pd.read_csv(path_to_out_file,sep='\t',index_col="tconst")
     # print(f"Le fichier {fichier_tsv} a été créé avec succès !")
+
+def get_title_basics(path_to_out_file):
+    
+    # URL du fichier .gz que vous souhaitez télécharger
+    url_fichier_gz = 'https://datasets.imdbws.com/title.basics.tsv.gz'
+
+    # Chemin vers le fichier .tsv que vous souhaitez créer
+    fichier_tsv = path_to_out_file
+
+    # Télécharger le fichier .gz
+    response = req.get(url_fichier_gz)
+    if response.status_code == 200:
+        # Écrire les données dans le fichier .tsv
+        with open(fichier_tsv, 'wb') as fichier_sortie:
+            fichier_sortie.write(response.content)
+        #print(f"Le fichier {fichier_tsv} a été téléchargé et créé avec succès !")
+    else:
+        return -1
+        # print(f"Échec du téléchargement du fichier : {response.status_code}")
+
+    # Ouvrir le fichier .gz en mode binaire
+    with gz.open(fichier_tsv, 'rb') as fichier_compressé:
+        # Lire les données du fichier compressé
+        données = fichier_compressé.read()
+
+    # Écrire les données dans le fichier .tsv
+    with open(fichier_tsv, 'wb') as fichier_sortie:
+        fichier_sortie.write(données)
+    #print(f"Le fichier {fichier_tsv} a été créé avec succès !")
+    return pd.read_csv(path_to_out_file,sep='\t',index_col="tconst")
+
+
+
+
+def get_title_crew(path_to_out_file):
+    
+    # URL du fichier .gz que vous souhaitez télécharger
+    url_fichier_gz = 'https://datasets.imdbws.com/title.crew.tsv.gz'
+
+    # Chemin vers le fichier .tsv que vous souhaitez créer
+    fichier_tsv = path_to_out_file
+
+    # Télécharger le fichier .gz
+    response = req.get(url_fichier_gz)
+    if response.status_code == 200:
+        # Écrire les données dans le fichier .tsv
+        with open(fichier_tsv, 'wb') as fichier_sortie:
+            fichier_sortie.write(response.content)
+        #print(f"Le fichier {fichier_tsv} a été téléchargé et créé avec succès !")
+    else:
+        return -1
+        # print(f"Échec du téléchargement du fichier : {response.status_code}")
+
+    # Ouvrir le fichier .gz en mode binaire
+    with gz.open(fichier_tsv, 'rb') as fichier_compressé:
+        # Lire les données du fichier compressé
+        données = fichier_compressé.read()
+
+    # Écrire les données dans le fichier .tsv
+    with open(fichier_tsv, 'wb') as fichier_sortie:
+        fichier_sortie.write(données)
+    #print(f"Le fichier {fichier_tsv} a été créé avec succès !")
+    return pd.read_csv(path_to_out_file,sep='\t',index_col="tconst")
+
+def get_name_basics(path_to_out_file):
+    
+    # URL du fichier .gz que vous souhaitez télécharger
+    url_fichier_gz = 'https://datasets.imdbws.com/name.basics.tsv.gz'
+
+    # Chemin vers le fichier .tsv que vous souhaitez créer
+    fichier_tsv = path_to_out_file
+
+    # Télécharger le fichier .gz
+    response = req.get(url_fichier_gz)
+    if response.status_code == 200:
+        # Écrire les données dans le fichier .tsv
+        with open(fichier_tsv, 'wb') as fichier_sortie:
+            fichier_sortie.write(response.content)
+        #print(f"Le fichier {fichier_tsv} a été téléchargé et créé avec succès !")
+    else:
+        return -1
+        # print(f"Échec du téléchargement du fichier : {response.status_code}")
+
+    # Ouvrir le fichier .gz en mode binaire
+    with gz.open(fichier_tsv, 'rb') as fichier_compressé:
+        # Lire les données du fichier compressé
+        données = fichier_compressé.read()
+
+    # Écrire les données dans le fichier .tsv
+    with open(fichier_tsv, 'wb') as fichier_sortie:
+        fichier_sortie.write(données)
+    #print(f"Le fichier {fichier_tsv} a été créé avec succès !")
+    return pd.read_csv(path_to_out_file,sep='\t',index_col="nconst")

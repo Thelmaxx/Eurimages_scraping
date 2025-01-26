@@ -8,7 +8,7 @@ import re
 import utils
 import lumieres_api as lum
 
-
+#Original, French and English titles are arbitrary names given to allow searches with several titles at once
 def matching_project(OriginalTitle,FrenchTitle,EnglishTitle,Director,country,refyear,ID,token):
     temp_res=[]
 
