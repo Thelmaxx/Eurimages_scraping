@@ -7,7 +7,12 @@ import pyodbc
 
 
 token=lum.get_token()
+# cnxn = pyodbc.connect("Driver={SQL Server};"
+#                         "Server=LAPTOP-IUA12HD6\SQLSERVER2;"
+#                         "Database=Coeurimages;"
+#                         "Trusted_Connection=yes;")
 
+# cursor = cnxn.cursor()
 
 st.set_page_config(layout="wide")
 
