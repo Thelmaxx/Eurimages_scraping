@@ -4,10 +4,17 @@ import lumieres_api as lum
 import lumieres_matching as lumatch
 import pandas as pd
 import pyodbc 
+import platform
 
 
 token=lum.get_token()
-cnxn = pyodbc.connect("Driver={SQL Server};"
+
+if platform.system()=="Windows":
+    driver="SQL Server"
+else:
+    driver = "/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so"  # Driver Linux
+
+cnxn = pyodbc.connect(f"Driver={driver};"
                         "Server=LAPTOP-IUA12HD6\SQLSERVER2;"
                         "Database=Coeurimages;"
                         "Trusted_Connection=yes;")
