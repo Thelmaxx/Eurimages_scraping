@@ -12,7 +12,7 @@ token=lum.get_token()
 if platform.system()=="Windows":
     driver="SQL Server"
 else:
-    driver = "/opt/microsoft/msodbcsql17/lib64/libmsodbcsql-17.so"  # Driver Linux
+    driver = "{ODBC Driver 17 for SQL Server}" # Driver Linux
 
 cnxn = pyodbc.connect(f"Driver={driver};"
                         "Server=LAPTOP-IUA12HD6\SQLSERVER2;"
